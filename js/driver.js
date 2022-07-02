@@ -5,10 +5,11 @@ class Driver{
         this.h = 100;
         this.img = new Image();
         this.img.src = DRIVERS[driverIndex]
+        this.driverName = DRIVERSNAMES[driverIndex]
         this.dist = Math.random() * 300 + 60
         this.x = CANVAS_WIDTH / 2
         this.y = -110;
-        this.vy = 2;
+        this.vy = 7;  // velocidad hascia abajo
         this.player = player;
         this.vx = 1
         this.takeOverOn = false;
@@ -78,14 +79,25 @@ class Driver{
 
         // ¡¡¡    AQUI COMIENZA EL REBASE    !!!
 
-        //console.log(`right ${this.right}`)
-        //console.log(`left ${this.left}`)
         if(this.y > (CANVAS_HEIGHT * 4/6) && this.y < (CANVAS_HEIGHT - 5) && this.takeOverOn === false){
          // console.log('entra') // *** LOGRÓ ENTRAR AQUI!!!
           this.y += 0.3;
           this.takeOverOn = true
           }
-      
+          const overtakeSign = document.getElementById('overtake')
+          let changeDriversNames = document.getElementById('changeNames')
+          changeDriversNames.innerHTML = `Don't let ${this.driverName} overtake you!`
+          
+          let driverVersus = document.getElementById('versus')
+          driverVersus.innerHTML = `Checo Pérez vs ${this.driverName}`
+
+          if(this.takeOverOn === false)
+          {
+            overtakeSign.classList.add('hidden')
+          } else{
+            overtakeSign.classList.remove('hidden')
+          }
+        
         // si ya te rebasó que siga subiendo
         if(this.y < this.player.y && this.takeOverOn === true){
           this.y -= 5
@@ -104,7 +116,7 @@ class Driver{
           this.x += speedTakeOver
         }
 
-         if(this.x <= CANVAS_WIDTH -100 && this.takeOverOn === true){
+         if(this.x <= CANVAS_WIDTH -130 && this.takeOverOn === true){
           this.y += 0.2
          } else {
           speedTakeOver = speedTakeOver *-1

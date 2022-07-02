@@ -14,6 +14,7 @@ window.onload = () => {
 
   document.getElementById('start-button').onclick = () => {
     startGame();
+    
   };
   document.getElementById('reload-button').onclick = () =>{
     location.reload();

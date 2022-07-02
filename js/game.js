@@ -23,11 +23,16 @@ class Game{
         this.finishLineArray = []
         this.tickFinishLine = 0;
         this.countLaps = 0;
-        this.numberOfLaps = 5;
+        this.numberOfLaps = 10; // numero de vueltas
         this.blockCollide = false;
+        this.music = new Audio();
+        this.music.src = "../sound/formula1anthem.mp3"
+        this.music.loop = true;
+        
     }
 
     start(){
+        this.music.play()
         this.intervalId = setInterval (()=>{
             this.clear();
             this.printPosition();
@@ -101,6 +106,8 @@ class Game{
         this.player.vx = this.powerSpeed;
         this.player.vy = this.powerSpeed;
 
+
+
         if(!this.intervalStopDRS){
           this.intervalStopDRS = setTimeout(()=>{ 
             //console.log('SETTIMEOUT')
@@ -168,8 +175,11 @@ class Game{
         this.ctx.font = 'italic 30px Arial';
         this.ctx.fillStyle = "white";
         this.ctx.textAlign = "top";
-        this.ctx.fillText(`Lap ${this.countLaps}/${this.numberOfLaps}`, this.ctx.canvas.width-180, this.ctx.canvas.height - 660 );
-
+        if(this.numberOfLaps === this.countLaps || this.numberOfLaps < this.countLaps){
+          this.ctx.fillText(`Final Lap!`, this.ctx.canvas.width-180, this.ctx.canvas.height - 660 );
+        }else{
+          this.ctx.fillText(`Lap ${this.countLaps}/${this.numberOfLaps}`, this.ctx.canvas.width-180, this.ctx.canvas.height - 660 );
+        }
         let lettersPosition = 'th'
 
         switch (this.positionIndex){
@@ -197,7 +207,7 @@ class Game{
         this.ctx.textAlign = "center";
         this.ctx.fillText(`${lettersPosition}`, this.ctx.canvas.width - 620 , this.ctx.canvas.height - 55);
 
-        if(this.countLaps > this.numberOfLaps){
+        if(this.countLaps > this.numberOfLaps && this.positionIndex != 4){
           this.gameOverLaps()
         }
       }
@@ -263,26 +273,33 @@ class Game{
       }
 
       gameOver() {
+       
+        const checoLost = document.getElementById('checolost')
+        checoLost.classList.remove('hidden')
+
+        let checoPositionLost = document.getElementById('checoLostPosition')
+        if(this.countLaps != this.numberOfLaps){
+          checoPositionLost.innerHTML = `You crashed in lap number ${this.countLaps}`
+        } else{
+          checoPositionLost.innerHTML = `You crashed in the Final Lap!`
+        }
+
         clearInterval(this.intervalId);
         clearInterval(this.intervalDRS);
+
         
-        this.ctx.fillRect(20, CANVAS_HEIGHT/3, CANVAS_WIDTH -40, 250); 
         this.intervalId = null
-        this.ctx.font = "40px Arial";
-        this.ctx.fillStyle = "black";
-        this.ctx.textAlign = "center";
-        this.ctx.fillText("GAME OVER", this.ctx.canvas.width/2, this.ctx.canvas.height/2);
-        this.ctx.fillText(`You crashed in lap number ${this.countLaps}`,   this.ctx.canvas.width/2, this.ctx.canvas.height-300);
+        
         speed = 1;
       }  
 
       youWin(){
+
+        // colocar aqui el gif
+        const checoWins = document.getElementById('checowins')
+        checoWins.classList.remove('hidden')
+        
+
         clearInterval(this.intervalId);
-        this.ctx.fillRect(20, CANVAS_HEIGHT/3, CANVAS_WIDTH -40, 250); 
-        this.intervalId = null
-        this.ctx.font ='italic 30px Arial';
-        this.ctx.fillStyle = "red";
-        this.ctx.textAlign = "center";
-        this.ctx.fillText("YOU WIN", this.ctx.canvas.width/2, this.ctx.canvas.height/2);
       }
 }

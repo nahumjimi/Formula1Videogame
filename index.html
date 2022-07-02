@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="stylesheet" href="styles/style.css" />
+    <link href="https://blogfonts.com/css/aWQ9MTUxNTEzJnN1Yj01MTMmYz1mJnR0Zj1Gb3JtdWxhMS1Cb2xkX3dlYl8wLnR0ZiZuPWZvcm11bGExLWRpc3BsYXktYm9sZA/Formula1 Display Bold.ttf" rel="stylesheet" type="text/css"/>
     <title>Race Car</title>
   </head>
   <body>
@@ -27,15 +28,33 @@
       </div>
       <canvas id="canvas" width="700" height="700"></canvas>
       <div id="menu-board">
-        <button id="about-button">ABOUT</button>
         <button id="start-button">START GAME</button>
+        <button id="about-button">ABOUT</button>
       </div>
       <div id="menu-about" class="hidden">
       <div id="closeAbout">
         <img src="./images/closeIcon.jpg" alt="close Icon" class="imageIcon">
       </div>
-        <div id="text-about">This game was coded by me, Nahum Jaime. <br><br> This is the result of my ability to handle frustration, and my ability to create solutions to every problem I faced durnig the coding of this game. I want to thank to Ironhack, my colleagues, my teachers (Carlos & Pablo) and my TA (Marcos) who guided me and were always available when I needed some help. <br> <br> ENJOY THE GAME! <br> <br> And feel free to improve the game! <br> If you want to get in touch contact me at nahum.jsz@gmail.com</div>
+        <div id="text-about">This game was coded by me, Nahum Jaime. <br><br> This is the result of my ability to handle frustration, and my ability to create solutions to every problem I faced during the coding of this game. I want to thank to Ironhack, my colleagues, my teachers (Carlos & Pablo) and my TA (Marcos) who guided me and were always available when I needed some help. <br> <br> ENJOY THE GAME! <br> <br> And feel free to fork and improve! <br> If you want to get in touch contact me at nahum.jsz@gmail.com</div>
       </div>
+      
+      <div id="overtake" class = "hidden">
+        <p id="changeNames"></p>
+      </div>
+
+      <div id="checowins" class="hidden">
+        <img src="./images/places/checoWins.gif" alt="checowinnerahuevo">
+      </div>
+
+      <div id="checolost" class="hidden">
+        <img src="./images/places/checoCrash.gif" alt="checoChoca" id="checoLostImage">
+        <p id="checoLostPosition"></p>
+      </div>
+
+      <div id="versus">
+        <p id="changeNames"></p>
+      </div>
+
     </div>
     <script type="text/javascript" src="js/constants.js"></script>
     <script type="text/javascript" src="js/background.js"></script>
