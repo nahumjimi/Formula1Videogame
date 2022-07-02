@@ -5,11 +5,11 @@ class Powerup{
         this.h = 20;
         this.img = new Image();
         this.img.src = "/images/drs.png"
-        this.dist = Math.random() * 300 + 60
+        this.dist = Math.random() * 300 + 80
         this.x = left ? 75 : this.ctx.canvas.width - this.dist
         this.y = -110;
         this.vy = 5;
-        this.vx = 5;
+        this.vx = 3;
         this.player = player;
     }
 

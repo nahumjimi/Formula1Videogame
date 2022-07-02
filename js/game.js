@@ -23,7 +23,7 @@ class Game{
         this.finishLineArray = []
         this.tickFinishLine = 0;
         this.countLaps = 0;
-        this.numberOfLaps = 12;
+        this.numberOfLaps = 5;
         this.blockCollide = false;
     }
 
@@ -35,6 +35,7 @@ class Game{
             this.checkCollisions()
             this.move();
             this.clearDrivers();
+            this.printLaps()
           
             this.tickFinishLine++;
             this.tickPowerUp++;
@@ -87,10 +88,10 @@ class Game{
     checkCollisions() {
 
       let playerVsPowerUp =  this.powerups.find(power => power.collide(this.player)) 
-      console.log(this.DRSbarOn)
+      //console.log(this.DRSbarOn)
       
       if (playerVsPowerUp){
-        console.log('entra')
+        //console.log('entra')
         this.powerups.pop()
         this.DRSbarOn = true
         this.DRSbarTotal = 100; 
@@ -102,10 +103,11 @@ class Game{
 
         if(!this.intervalStopDRS){
           this.intervalStopDRS = setTimeout(()=>{ 
-            console.log('SETTIMEOUT')
+            //console.log('SETTIMEOUT')
             this.DRSbarOn = false
             this.player.vx = this.normalSpeed
             this.player.vy = this.normalSpeed
+            this.intervalStopDRS = null;
             clearTimeout(this.intervalStopDRS) 
           }, 5000)
        }
@@ -116,6 +118,7 @@ class Game{
 
         let playerVsDriv = this.drivers.find(driv => driv.collide(this.player))
         if (playerVsDriv || this.player.y >= this.ctx.canvas.height ||  this.player.y + this.player.h <= 0 || this.player.x < 83 || this.player.x + this.player.w > this.ctx.canvas.width - 80 )  {
+
           this.gameOver()
         }  
 
@@ -137,8 +140,9 @@ class Game{
           this.drivers.push(new Driver(this.ctx, this.driverLeft, this.player, this.driverIndex, this.positionIndex))
           this.driverIndex += 1;
           speed = speed + 0.5
+          speedTakeOver = Math.abs(speedTakeOver) + 0.5 
           this.driverLeft = !this.driverLeft
-        } else{
+        } else if(this.countLaps > this.numberOfLaps || this.driverIndex < 4){
             this.positionIndex += 1;
             this.youWin();
         }
@@ -160,6 +164,43 @@ class Game{
         this.finishLineArray = this.finishLineArray.filter(finish=>finish.isVisible())
       }
 
+      printLaps(){
+        this.ctx.font = 'italic 30px Arial';
+        this.ctx.fillStyle = "white";
+        this.ctx.textAlign = "top";
+        this.ctx.fillText(`Lap ${this.countLaps}/${this.numberOfLaps}`, this.ctx.canvas.width-180, this.ctx.canvas.height - 660 );
+
+        let lettersPosition = 'th'
+
+        switch (this.positionIndex){
+         case 0:
+         case 1:
+          lettersPosition = 'th'
+          break;
+         
+         case 2:
+          lettersPosition = 'rd'
+          break;
+         
+         case 3:
+          lettersPosition = 'nd'
+          break;
+
+         case 4:
+          lettersPosition = 'st'
+          break;
+
+        }
+
+        this.ctx.font = "italics 40px Arial";
+        this.ctx.fillStyle = "white";
+        this.ctx.textAlign = "center";
+        this.ctx.fillText(`${lettersPosition}`, this.ctx.canvas.width - 620 , this.ctx.canvas.height - 55);
+
+        if(this.countLaps > this.numberOfLaps){
+          this.gameOverLaps()
+        }
+      }
 
       printPosition(){
         this.drivers.forEach(driv => {
@@ -167,6 +208,7 @@ class Game{
         })
         this.positions.pop()
         this.positions.push(new Positions(this.ctx, this.positionIndex))
+        
       }
 
       printDRS(){
@@ -179,12 +221,46 @@ class Game{
               this.DRSbarTotal = 0;
               this.DRSbar.style.width = `${this.DRSbarTotal}%`
               this.DRSbarOn = false;
+              
               clearInterval(this.intervalDRS);
             }
           },100)  
         }
       }
       
+      gameOverLaps(){
+        clearInterval(this.intervalId);
+        clearInterval(this.intervalDRS);
+
+        let positionFinish = 0
+
+        switch(this.positionIndex){
+          case 0:
+            positionFinish = '5th'
+          break;
+          case 1:
+            positionFinish = '4th'
+          break;
+          case 2:
+            positionFinish = '3rd'
+          break;
+          case 3:
+            positionFinish = '2nd'
+          break;
+          case 4:
+            positionFinish = '1st'
+          break;
+        }
+        
+        this.ctx.fillRect(20, CANVAS_HEIGHT/3, CANVAS_WIDTH -40, 250); 
+        this.intervalId = null
+        this.ctx.font = "40px Arial";
+        this.ctx.fillStyle = "black";
+        this.ctx.textAlign = "center";
+        this.ctx.fillText("GAME OVER", this.ctx.canvas.width/2, this.ctx.canvas.height/2);
+        this.ctx.fillText(`You finished ${positionFinish} after ${this.numberOfLaps} laps`,   this.ctx.canvas.width/2, this.ctx.canvas.height-300);
+        speed = 1;
+      }
 
       gameOver() {
         clearInterval(this.intervalId);
@@ -193,7 +269,7 @@ class Game{
         this.ctx.fillRect(20, CANVAS_HEIGHT/3, CANVAS_WIDTH -40, 250); 
         this.intervalId = null
         this.ctx.font = "40px Arial";
-        this.ctx.fillStyle = "white";
+        this.ctx.fillStyle = "black";
         this.ctx.textAlign = "center";
         this.ctx.fillText("GAME OVER", this.ctx.canvas.width/2, this.ctx.canvas.height/2);
         this.ctx.fillText(`You crashed in lap number ${this.countLaps}`,   this.ctx.canvas.width/2, this.ctx.canvas.height-300);
@@ -204,10 +280,9 @@ class Game{
         clearInterval(this.intervalId);
         this.ctx.fillRect(20, CANVAS_HEIGHT/3, CANVAS_WIDTH -40, 250); 
         this.intervalId = null
-        this.ctx.font = "30px Arial";
-        this.ctx.fillStyle = "white";
+        this.ctx.font ='italic 30px Arial';
+        this.ctx.fillStyle = "red";
         this.ctx.textAlign = "center";
         this.ctx.fillText("YOU WIN", this.ctx.canvas.width/2, this.ctx.canvas.height/2);
-        this.ctx.fillText(`Your Score is ${Math.floor(this.score/10)}`, this.ctx.canvas.width/2, this.ctx.canvas.height-300);
       }
 }

@@ -8,12 +8,13 @@
     <title>Race Car</title>
   </head>
   <body>
+  <div class="backgroundImg">
     <div class="game-intro">
-      <img src="./images/logo.png" alt="" class="logo-img" />
+      <img src="./images/logo_formula1.png" alt="" class="logo-img" />
       <br />
-      <button id="start-button">StartGame</button>
-      <p>Use the left and right arrow to control the car!</p>
-      <img src="./images/arrows.png" alt="" class="arrows-img" />
+      <button id="reload-button">Reload</button>
+      <p>Use the arrow keys to control the car!</p>
+      <img src="./images/arrowKeysWhite.png" alt="" class="arrows-img" />
     </div>
 
     <div id="game-board">
@@ -25,6 +26,16 @@
         </div>
       </div>
       <canvas id="canvas" width="700" height="700"></canvas>
+      <div id="menu-board">
+        <button id="about-button">ABOUT</button>
+        <button id="start-button">START GAME</button>
+      </div>
+      <div id="menu-about" class="hidden">
+      <div id="closeAbout">
+        <img src="./images/closeIcon.jpg" alt="close Icon" class="imageIcon">
+      </div>
+        <div id="text-about">This game was coded by me, Nahum Jaime. <br><br> This is the result of my ability to handle frustration, and my ability to create solutions to every problem I faced durnig the coding of this game. I want to thank to Ironhack, my colleagues, my teachers (Carlos & Pablo) and my TA (Marcos) who guided me and were always available when I needed some help. <br> <br> ENJOY THE GAME! <br> <br> And feel free to improve the game! <br> If you want to get in touch contact me at nahum.jsz@gmail.com</div>
+      </div>
     </div>
     <script type="text/javascript" src="js/constants.js"></script>
     <script type="text/javascript" src="js/background.js"></script>
@@ -35,7 +46,7 @@
     <script type="text/javascript" src="js/positions.js"></script>
     <script type="text/javascript" src="js/game.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
-    
+  </div>
   </body>
 </html>
  

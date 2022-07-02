@@ -6,38 +6,180 @@ class Driver{
         this.img = new Image();
         this.img.src = DRIVERS[driverIndex]
         this.dist = Math.random() * 300 + 60
-        this.x = left ? 75 : this.ctx.canvas.width - this.dist
+        this.x = CANVAS_WIDTH / 2
         this.y = -110;
         this.vy = 2;
         this.player = player;
+        this.vx = 1
+        this.takeOverOn = false;
+        this.takeOverSpeed = 7;
+        this.right =  false;
+        this.left = false;
+
       }
 
 
       moveDri() {
+        
+
+        // console.log(this.takeOverOn)
+        let xPlayer = this.player.x
+        if(this.player.y > this.y && this.y < CANVAS_HEIGHT / 3 && this.takeOverOn === false){
+          this.y += 1
+          // ****** desde aquí se cubre de que no lo rebases...
+          if(xPlayer < this.x){
+              this.x = this.x - speed
+            }  else if(xPlayer > this.x ){
+              this.x = this.x + speed
+            }else{  
+              this.x = this.x
+            }
+        // ****** hasta aquí se cubre de que no lo rebases...
+        } 
+        if(this.y > CANVAS_HEIGHT/3 && this.y < ((CANVAS_HEIGHT/3) +5 ) && this.takeOverOn === false){
+          this.vy = 0;
+          // ****** desde aquí se cubre de que no lo rebases...
+          if(xPlayer < this.x){
+            this.x = this.x - speed
+          }  else if(xPlayer > this.x ){
+            this.x = this.x + speed
+          }else{  
+            this.x = this.x
+          } 
+        // ****** hasta aquí se cubre de que no lo rebases...
+        } 
+
+        if(this.y < ((CANVAS_HEIGHT/3) +5 ) && this.player.y < this.y && this.player.y + this.player.h > this.y && this.takeOverOn === false){
+          this.y += 1;
+          // ****** desde aquí se cubre de que no lo rebases...
+          if(xPlayer < this.x){
+            this.x = this.x - speed
+          }  else if(xPlayer > this.x ){
+            this.x = this.x + speed
+          }else{  
+            this.x = this.x
+          } 
+        // ****** hasta aquí se cubre de que no lo rebases...
+        } 
+
+        if(this.y > this.player.y && this.takeOverOn === false){
+          this.y += 1;
+          // ****** desde aquí se cubre de que no lo rebases...
+          if(xPlayer < this.x){
+            this.x = this.x - speed
+          }  else if(xPlayer > this.x ){
+            this.x = this.x + speed
+          }else{  
+            this.x = this.x
+          } 
+        // ****** hasta aquí se cubre de que no lo rebases...
+        } 
+       
+
+        // ¡¡¡    AQUI COMIENZA EL REBASE    !!!
+
+        //console.log(`right ${this.right}`)
+        //console.log(`left ${this.left}`)
+        if(this.y > (CANVAS_HEIGHT * 4/6) && this.y < (CANVAS_HEIGHT - 5) && this.takeOverOn === false){
+         // console.log('entra') // *** LOGRÓ ENTRAR AQUI!!!
+          this.y += 0.3;
+          this.takeOverOn = true
+          }
       
-      let xPlayer = this.player.x
+        // si ya te rebasó que siga subiendo
+        if(this.y < this.player.y && this.takeOverOn === true){
+          this.y -= 5
+          if(this.y < CANVAS_HEIGHT /3 && this.takeOverOn === true)
+          this.takeOverOn = false;
+          this.left = false
+          this.right = false
+        }
 
-      if(this.y > CANVAS_HEIGHT / 3 ){
-        this.vy = 0;
-      } else{
-        this.y += this.vy
+        if((((this.x + this.w)/2) > (((this.player.x + this.player.w) / 2) + 50) || ((this.x + this.w)/2) < (((this.player.x + this.player.w) / 2)-50)) && this.takeOverOn === true){   
+         //console.log('ENTRAAAAAAA')
+          this.y -= 7
+        } 
+
+        if(this.takeOverOn === true){
+          this.x += speedTakeOver
+        }
+
+         if(this.x <= CANVAS_WIDTH -100 && this.takeOverOn === true){
+          this.y += 0.2
+         } else {
+          speedTakeOver = speedTakeOver *-1
+         }
+
+         if(this.x >= 100 && this.takeOverOn === true){
+          this.y += 0.2
+         } else {
+          speedTakeOver = speedTakeOver *-1
+         }
+
+
+ /* 28.06.2022 aeropuerto SS 28.06************** 
+          if(this.x >= CANVAS_WIDTH - 80 && this.takeOverOn === true){
+            this.left = true;
+            this.right = false;
+          } else if (this.x <= 80 && this.takeOverOn === true){
+            this.left = false;
+            this.right = true;
+          } else if (this.x == CANVAS_WIDTH/2){
+            let randomSide = Math.floor(Math.random (2))
+            if (randomSide === 1){
+                this.left = true
+                this.right = false
+            } else{
+                this.left = false
+                this.right = true
+            }
+          }
+
+          if(this.x >= CANVAS_WIDTH/2 && this.x <= CANVAS_WIDTH -80 && this.takeOverOn === true && this.left === true){
+            console.log('entra')
+            this.left = true
+            this.right = false
+            this.y += 0.4
+          } 
+          if(this.x <= CANVAS_WIDTH/2 && this.takeOverOn === true){
+            this.left = false
+            this.right = true
+            this.y += 0.4 
+          }
+
+          if(this.left === true && this.takeOverOn === true){
+            console.log('entra')
+            this.x = this.x - speed
+          }
+          if(this.right === true && this.takeOverOn === true){
+            this.x = this.x + speed
+          }
+         
+  28.06.2022 aeropuerto SS 28.06************** */
+
+        // } else if(((this.x + this.w)/2) > CANVAS_WIDTH/2 && this.x < CANVAS_WIDTH -80 && this.takeOverOn === true){
+        //   console.log('ENTRAAAAAAA')
+        //       this.x = this.x + speed
+        //       this.y = 0.5
+        // }
+            // } else if(this.x >= CANVAS_WIDTH - 80){
+            //   this.x = this.x - speed
+            //   this.y = -0.5
+            // }
+
+            // if(this.x < CANVAS_WIDTH / 2 && this.x > CANVAS_WIDTH + 80){
+            //   this.x = this.x + speed
+            //   this.y = -0.5
+            // } else if(this.x <= 80){
+            //   this.x = this.x - speed
+            //   this.y = -0.5
+            // }
+        
+        if(this.y > (CANVAS_HEIGHT - 6) && this.takeOverOn === true){
+          this.takeOverOn = false
+          this.y += 1;
+          } 
       }
-      if(this.player.y < this.y){
-        this.y+= 1
-     }
-
-        if(xPlayer < this.x){
-          this.x += -speed
-      }  else if(xPlayer > this.x ){
-          this.x += speed
-      }else{
-        this.vx = 0
-      }
-
-       if(this.yPlayer < this.x ){
-          this.vx = this.vx * -1
-    }  
-    }
 
       collide(player) {
         const collideX = player.x + player.w > this.x && player.x < this.x + this.w
@@ -88,8 +230,6 @@ class Driver{
               break;  
           }
         }
-
-
 
       draw() {
         this.ctx.drawImage(
