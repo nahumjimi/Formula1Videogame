@@ -26,7 +26,7 @@ class Game{
         this.numberOfLaps = 10; // numero de vueltas
         this.blockCollide = false;
         this.music = new Audio();
-        this.music.src = "../sound/formula1anthem.mp3"
+        this.music.src = "./sound/formula1anthem.mp3"
         this.music.loop = true;
         
     }
