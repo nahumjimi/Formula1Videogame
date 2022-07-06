@@ -5,7 +5,7 @@ class Finishline{
         this.y = 0;
         this.vy = 10;
         this.img = new Image();
-        this.img.src = "/images/finishline.png";
+        this.img.src = "./images/finishline.png";
         this.w = CANVAS_WIDTH -83;
         this.h = 30;
     }

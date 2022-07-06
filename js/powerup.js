@@ -4,7 +4,7 @@ class Powerup{
         this.w = 40;
         this.h = 20;
         this.img = new Image();
-        this.img.src = "/images/drs.png"
+        this.img.src = "./images/drs.png"
         this.dist = Math.random() * 300 + 80
         this.x = left ? 75 : this.ctx.canvas.width - this.dist
         this.y = -110;
